@@ -1,0 +1,50 @@
+apiVersion: reviewpad.com/v1alpha
+
+rules:
+  - name: changesToMDFiles
+    kind: patch
+    description: Files with extension .md
+    spec: $filesExtensions([".md"])
+
+  - name: changesMainFile
+    kind: patch
+    description: Main file
+    spec: $hasFileName("dist/main.js")
+
+  - name: authoredByCheila
+    kind: author
+    description: Authored by cheila
+    spec: $name() == "shay2025"
+
+  - name: isSmallPatch
+    kind: patch
+    description: Patch has less than fifty changes
+    spec: $size() < 50
+
+  - name: isLargePatch
+    kind: patch
+    description: Large patch
+    spec: $fileCount() > 2
+
+
+protectionGates:
+  - name: ask
+    description: Ask process
+    patchRules:
+      - rule: changesMainFile
+        extraActions:
+          - $assignReviewer(["ferreiratiago"])
+      - rule: isLargePatch
+      - rule: authoredByCheila
+    actions:
+      - $addLabel("ask")
+      - $assignRandomReviewer()
+
+  - name: ship
+    description: Ship process
+    patchRules:
+      - rule: changesToMDFiles
+      - rule: isSmallPatch
+    actions:
+      - $addLabel("ship")
+      - $merge()

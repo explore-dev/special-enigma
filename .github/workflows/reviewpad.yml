@@ -1,0 +1,10 @@
+name: Reviewpad Action
+on:
+  pull_request
+
+jobs:
+  calls-cautious-broccoli:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Running cautious broccoli 
+        uses: explore-dev/cautious-broccoli@v1.7
