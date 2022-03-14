@@ -3,5 +3,4 @@
 This is a simple change to the README.md
 
 # TODO
-- Improve readme
-
+1. Improve readme
