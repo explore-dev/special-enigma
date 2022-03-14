@@ -7,7 +7,7 @@ groups:
     spec: '["shay2025"]'
 
   - name: seniors
-    description: Group of senior devs
+    description: Group of devs that have created more than 2 PRs
     kind: developers
     type: filter
     param: dev
@@ -31,7 +31,7 @@ rules:
 
   - name: isSmallPatch
     kind: patch
-    description: Patch has less than fifty changes
+    description: Patch has less than 90 changes and 6 files
     spec: $size() < 90 && $fileCount() <= 5
 
   - name: changesCriticalCode
