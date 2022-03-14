@@ -16,17 +16,17 @@ groups:
 rules:
   - name: changesToMDFiles
     kind: patch
-    description: Files with extension .md
+    description: Patch contains changes to files with extension .md
     spec: $filesExtensions([".md"])
 
   - name: changesMainFile
     kind: patch
-    description: Main file
+    description: Patch contains changes to the main file
     spec: $hasFileName("go/main.go")
 
   - name: authoredByJunior
     kind: author
-    description: Authored by junior dev
+    description: Patch is authored by a junior dev
     spec: $isMemberOf($name(), $group("juniors"))
 
   - name: isSmallPatch
@@ -35,18 +35,18 @@ rules:
     spec: $size() < 90 && $fileCount() <= 5
 
   - name: changesCriticalCode
-    description: The diffs involves a critical method or function
+    description: Patch involves a critical method or function
     kind: patch
     spec: $hasAnnotation("critical")
 
   - name: callsQuicksort
     kind: patch
-    description: The diff contains the keyword quicksort
+    description: Patch contains the keyword quicksort
     spec: $codeQuery("quicksort")
 
 protectionGates:
   - name: critical
-    description: Modification of critical code require careful review
+    description: Modifications of critical code require careful review
     patchRules:
       - rule: changesCriticalCode
       - rule: callsQuicksort
@@ -66,7 +66,7 @@ protectionGates:
       - $assignRandomReviewer()
 
   - name: ship
-    description: Ship process
+    description: Ship process - bypass the review and automerge with rebase
     patchRules:
       - rule: changesToMDFiles
       - rule: isSmallPatch
