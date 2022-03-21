@@ -1,12 +1,12 @@
 apiVersion: reviewpad.com/v1alpha
 
 groups:
-  - name: juniors
+  juniors:
     description: Group of junior devs
     kind: developers
     spec: '["shay2025"]'
 
-  - name: seniors
+  seniors:
     description: Group of devs that have created more than 2 PRs
     kind: developers
     type: filter
@@ -14,38 +14,38 @@ groups:
     where: $totalCreatedPRs($dev) > 2
 
 rules:
-  - name: changesToMDFiles
+  changesToMDFiles:
     kind: patch
     description: Patch contains changes to files with extension .md
     spec: $filesExtensions([".md"])
 
-  - name: changesMainFile
+  changesMainFile:
     kind: patch
     description: Patch contains changes to the main file
     spec: $hasFileName("go/main.go")
 
-  - name: authoredByJunior
-    kind: author
+  authoredByJunior:
+    kind: patch
     description: Patch is authored by a junior dev
     spec: $isMemberOf($name(), $group("juniors"))
 
-  - name: isSmallPatch
+  isSmallPatch:
     kind: patch
     description: Patch has less than 90 changes and 6 files
     spec: $size() < 90 && $fileCount() <= 5
 
-  - name: changesCriticalCode
+  changesCriticalCode:
     description: Patch involves a critical method or function
     kind: patch
     spec: $hasAnnotation("critical")
 
-  - name: callsQuicksort
+  callsQuicksort:
     kind: patch
     description: Patch contains the keyword quicksort
     spec: $codeQuery("quicksort")
 
 protectionGates:
-  - name: critical
+  critical:
     description: Modifications of critical code require careful review
     patchRules:
       - rule: changesCriticalCode
@@ -54,7 +54,7 @@ protectionGates:
       - $addLabel("priority")
       - $assignReviewer($group("seniors"))
 
-  - name: standard
+  standard:
     description: Standard review process
     patchRules:
       - rule: changesMainFile
@@ -65,7 +65,7 @@ protectionGates:
       - $addLabel("ask")
       - $assignRandomReviewer()
 
-  - name: ship
+  ship:
     description: Ship process - bypass the review and automerge with rebase
     patchRules:
       - rule: changesToMDFiles
