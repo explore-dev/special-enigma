@@ -1,4 +1,4 @@
-apiVersion: reviewpad.com/v1alpha
+apiVersion: reviewpad.com/v001
 
 groups:
   juniors:
