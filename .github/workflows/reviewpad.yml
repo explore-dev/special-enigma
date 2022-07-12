@@ -7,4 +7,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Running cautious broccoli 
-        uses: explore-dev/cautious-broccoli@v1.7
+        uses: explore-dev/cautious-broccoli@master
